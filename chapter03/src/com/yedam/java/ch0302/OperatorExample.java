@@ -32,18 +32,18 @@ public class OperatorExample {
 		
 		System.out.println("--------------------------");
 		z = x++;
-		System.out.println("z = " + z);	//12
-		System.out.println("x = " + x);	//13
+		System.out.println("z = " + z);	//12	++이 뒤에 있으니까 대입연산자부터 연산하기때문에 z=x 먼저 대입되고 그다음에 +1을 더하기 때문에 z는 일단 12 가 되는것
+		System.out.println("x = " + x);	//13	대입연산자를 연산한 후에 x를 물어보면 ++이 됐기 때문에 13이 되는것
 		
 		System.out.println("--------------------------");
 		z = ++x;
-		System.out.println("z = " + z);	// 14
-		System.out.println("x = " + x);	// 14
+		System.out.println("z = " + z);	// 14	++이 앞에 있으므로 먼저 1을 더한 14를 z에 대입하는거라서 z=14
+		System.out.println("x = " + x);	// 14	
 		
 		System.out.println("--------------------------");
 		z = ++x + y++;
-		System.out.println("z =" + z);	//23
-		System.out.println("x =" + x);	//15
+		System.out.println("z =" + z);	//23	x는 앞에 ++이 있으니까 1 더한 15, y는 뒤에++가 있으니까 그냥 8, x+y 하면 23, 그 이후에 y에서 -1 하면 y=9
+		System.out.println("x =" + x);	//15	
 		System.out.println("y =" + y);	//9
 		
 		// 1) ++x =>15
@@ -58,7 +58,7 @@ public class OperatorExample {
 		
 		System.out.println("--------------------------");
 		z = x++ + --y;
-		System.out.println("z =" + z);	// 9
+		System.out.println("z =" + z);	// 9	x는 ++이 뒤에 있으니까 일단 그냥 5, y는 앞에--가 있으니까 4, x+y 하면 9, 그리고 x에 1 더해줘서 x는 6
 		System.out.println("x =" + x);	//6
 		System.out.println("y =" + y);	//4
 		
@@ -69,7 +69,7 @@ public class OperatorExample {
 		
 		System.out.println("--------------------------");
 		z = --x + y++;
-		System.out.println("z =" + z);	// 9
+		System.out.println("z =" + z);	// 9	x는 앞에 --가 있으니까 5, y는 뒤에 ++이 있으니까 일단 그냥 4, x+y하면 9, 그리고 y에 1 더해줘서 5
 		System.out.println("x =" + x);	// 5
 		System.out.println("y =" + y);	// 5
 		
@@ -83,10 +83,10 @@ public class OperatorExample {
 		System.out.println(play);
 		
 		play = !play;
-		System.out.println(play);
+		System.out.println(play);	//true를 부정 -> false
 		
 		play = !play;
-		System.out.println(play);
+		System.out.println(play);	//false된거를 다시 부정 -> true
 		
 		boolean isOpen = true;
 		
@@ -196,8 +196,8 @@ public class OperatorExample {
 		resultA %= 3;	//resultA = resultA % 3
 		System.out.println("%= : "+ resultA);
 		
-		//삼항연산자 - ? : ;로 골격부터 맞춰놓고 적자
 		
+		//삼항연산자 - ? : ;로 골격부터 맞춰놓고 적자
 		int score = 85;
 		char grade = (score> 90) ? 'A': 'B' ;
 		System.out.printf("성적은 %d이고 등급은 %c 입니다.\n", score,grade); 		//%c : char타입에 대응되는거. %s가 더 넓은 개념이라 %s 써도 상관 없음.
