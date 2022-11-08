@@ -36,18 +36,33 @@ public class Practice {
 			System.out.println("");
 		}
 		
-		//     *
-		//    **
-		//   ***
-		//  ****
-		// *****
+		//     *	-> 1번째줄: 공백 3개, 별 1개 =>총 문자 4개
+		//    **	-> 2번째줄: 공백 2개, 별 2개 =>총 문자 4개
+		//   ***	-> 3번째줄: 공백 1개, 별 3개 =>총 문자 4개
+		//  ****	-> 4번째줄: 공백 0개, 별 4개 =>총 문자 4개
+		
+		//풀이1)
 		String star = "";
-		for(int i=1; i<6; i++) {
-			for(int j=5; j>i; j--) {
+		for(int i=1; i<5; i++) {
+			for(int j=4; j>i; j--) {
 				System.out.print(" ");
 			}
 			System.out.println(star+="*");
 		}
+		
+		//풀이2)
+		for(int i=1; i<=4; i++) {	//line표시
+			for(int j=1; j<=4; j++) {	
+				if(j<=(4-i)) {
+					System.out.print(" ");
+				}else {
+					System.out.print("*");
+				}
+			}
+			System.out.println();
+		}
+		
+		
 		
 		
 	}
