@@ -3,10 +3,10 @@ package com.yedam.java.ch0601;
 public class CarExample {
 
 	public static void main(String[] args) {
-		Car car1 = new Car();	//new연산자가 생성자를 호출한다.
-		System.out.println("최대 스피드 :"+ car1.maxspeed);
-		System.out.println("색깔 :" +car1.color);
-		car1.run();
+		Car car1 = new Car();	//new연산자가 생성자를 호출한다.-> 객체 초기화 => 자동차 출하
+		System.out.println("최대 스피드 :"+ car1.maxspeed); 
+		System.out.println("색깔 :" +car1.color);		//-> 클래스의 필드(속성)을 불러옴
+		car1.run();		//-> 메소드 실행
 		
 		System.out.println();
 		
