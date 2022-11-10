@@ -1,4 +1,4 @@
-package com.yedam.java.ch0601;
+package com.yedam.java.ch0606_home;
 
 public class Access {
 	//대상 : 모든 속성, 필드, 메소드, 생성자 등등 자바의 모든 전부

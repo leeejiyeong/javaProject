@@ -1,6 +1,6 @@
-package com.yedam.java.ch0601;
+package com.yedam.java.ch06;
 
-public class PhoneExample {
+public class SmartPhoneExample {
 
 	public static void main(String[] args) {
 		SmartPhone iphone14Pro = new SmartPhone();	//클래스를 활용해서 객체를 만들때(메모리 공간을 할당할때) new연산자 사용
@@ -21,7 +21,7 @@ public class PhoneExample {
 		SmartPhone zflip4 = new SmartPhone();
 		
 		System.out.println("객체 생성시 생성자에 초기값을 안 넣어준 경우");
-		System.out.println(zflip4.name);
+		System.out.println(zflip4.name);	//null
 		
 		zflip4.name = "z-filp4";
 		zflip4.maker = "Samsung";

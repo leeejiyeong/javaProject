@@ -1,4 +1,4 @@
-package com.yedam.java.ch0601;
+package com.yedam.java.ch0606_home;
 
 public class Member {
 	

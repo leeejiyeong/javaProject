@@ -1,9 +1,9 @@
-package com.yedam.java.ch0601;
+package com.yedam.java.ch0606_home;
 
 public class Singleton {	//여러번 만들필요없이 하나만 만들어서 쓴다는거
 	//전체 프로그램에서 단 하나의 객체만 만들도록 보장하는 코딩기법
 	//어떻게?
-	//1. 객체 생성을 막는다. 2. 단 하나만 만들게 한다. 
+	//1. 객체 생성을 막는다.->private  2. 단 하나만 만들게 한다. ->getInstance
 	//방법1) - 일단 메모리에 올리고 봄
 	private static Singleton singleton = new Singleton();
 							//singleton = new Singleton();

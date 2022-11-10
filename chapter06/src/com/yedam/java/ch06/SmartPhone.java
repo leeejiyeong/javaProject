@@ -1,4 +1,4 @@
-package com.yedam.java.ch0601;
+package com.yedam.java.ch06;
 
 public class SmartPhone {
 	//필드 - 해당 클래스의 속성(정보)를 저장하는 구간

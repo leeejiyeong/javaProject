@@ -1,8 +1,9 @@
-package com.yedam.java.ch0601;
+package com.yedam.java.ch0605_home;
 
 public class ConstantNo {
 	//==필드==
-	static final double PI = 3.14;		//static->전역에서 쓸수있는 필드인데, final-> 불변의 필드가 된다. final은 대문자로 써주는게 관례
+	static final double PI = 3.14;		// static->전역에서 쓸수있는 필드인데, final-> 불변의 필드가 된다. -> static + final = 상수(constant)
+										// final은 대문자로 써주는게 관례
 	static final int EARTH_ROUND = 46250;		//합성어는 가운데 언더바 사용
 	static final int LIGHT_SPEED = 127000;
 	
