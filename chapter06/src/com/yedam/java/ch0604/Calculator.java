@@ -36,11 +36,12 @@ public class Calculator {
 	}
 	
 	//
-	
+	//정사각형 4면이 동일 -> 매개변수 하나만 가져오면 됨.
 	double areaRectangle(double width) {
 		return width * width;
 	}
 	
+	//직사각형 2면만 동일 -> 매개변수 두개 가져와야함.
 	double areaRectangle(double width, double height) {
 		return width * height;
 	}
