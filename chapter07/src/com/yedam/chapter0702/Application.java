@@ -38,7 +38,6 @@ public class Application {
 				break;
 			
 			}
-			System.out.println("------------------------");
 		}
 	}
 }

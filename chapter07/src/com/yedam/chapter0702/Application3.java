@@ -21,7 +21,6 @@ public class Application3 {
 		
 		
 		System.out.println("=======================");
-		
 		Driver driver = new Driver();
 		
 		//bus, taxi는 vehicle부모 클래스를 모시고 있는거임
