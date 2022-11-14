@@ -8,6 +8,7 @@ public class MyClass {
 	RemoteControl rc = new Television();
 	 
 	//생성자
+	//2)
 	public MyClass() {
 		
 	}
@@ -19,13 +20,14 @@ public class MyClass {
 	}
 	
 	//메소드
-	
+	//3)
 	void methodA() {
 		RemoteControl rc = new Audio();
 		rc.turnOn();
 		rc.turnOff();
 	}
 	
+	//4)
 	void methodB(RemoteControl rc) {
 		rc.turnOn();
 		rc.turnOff();
