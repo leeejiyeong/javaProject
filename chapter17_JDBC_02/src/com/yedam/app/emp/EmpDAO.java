@@ -18,4 +18,5 @@ public interface EmpDAO {
 	
 	// 삭제
 	void delete(int empNo);
+	
 }
