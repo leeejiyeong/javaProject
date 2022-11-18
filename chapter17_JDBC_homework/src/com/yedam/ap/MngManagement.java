@@ -38,6 +38,7 @@ public class MngManagement {
 			} else if (menuNo == 6) {
 				// 종료
 				end();
+				break;
 			} else {
 				// 기타사항
 				printErrorMessage();
