@@ -76,7 +76,7 @@ public class LoginControl {
 		Login info = new Login();
 		System.out.print("아이디 > ");
 		info.setLoginId(sc.nextLine());
-		System.out.println("비밀번호 > ");
+		System.out.print("비밀번호 > ");
 		info.setLoginPw(sc.nextLine());
 		
 		return info;

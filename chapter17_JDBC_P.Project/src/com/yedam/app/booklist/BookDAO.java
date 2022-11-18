@@ -17,5 +17,6 @@ public interface BookDAO {
 	void update(BookVO bookVO);
 	
 	//도서삭제
-	void delete(int bookVO);
+	void delete(int book_ISBN);
+
 }

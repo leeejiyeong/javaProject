@@ -29,11 +29,11 @@ public class BookDAOImpl extends DAO implements BookDAO {
 			
 			while(rs.next()) {
 				BookVO bookVO = new BookVO();
-				bookVO.setISBN(rs.getInt("ISBN"));
+				bookVO.setISBN(rs.getInt("book_ISBN"));
 				bookVO.setBook_title(rs.getString("book_title"));
 				bookVO.setBook_writer(rs.getString("book_writer"));
 				bookVO.setBook_content(rs.getString("book_content"));
-				bookVO.setBook_stock(rs.getString("book_stock"));
+				bookVO.setBook_stock(rs.getInt("book_stock"));
 				list.add(bookVO);
 			}
 			
@@ -51,11 +51,9 @@ public class BookDAOImpl extends DAO implements BookDAO {
 		BookVO findVO = null;
 		try {
 			connect();
-			String sql = "SELECT * FROM BookList WHERE book_title = ? OR book_writer =? ";
-					
+			String sql = "SELECT * FROM BookList WHERE book_ISBN = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, bookVO.getBook_title());
-			pstmt.setString(2, bookVO.getBook_writer());
+			pstmt.setInt(1, bookVO.getISBN());
 			
 			rs = pstmt.executeQuery();
 			
@@ -65,7 +63,7 @@ public class BookDAOImpl extends DAO implements BookDAO {
 				findVO.setBook_title(rs.getString("book_title"));
 				findVO.setBook_writer(rs.getString("book_writer"));
 				findVO.setBook_content(rs.getString("book_content"));
-				findVO.setBook_stock(rs.getString("book_stock"));
+				findVO.setBook_stock(rs.getInt("book_stock"));
 			}
 			
 		}catch(Exception e) {
@@ -87,7 +85,7 @@ public class BookDAOImpl extends DAO implements BookDAO {
 			pstmt.setString(2, bookVO.getBook_title());
 			pstmt.setString(3, bookVO.getBook_writer());
 			pstmt.setString(4, bookVO.getBook_content());
-			pstmt.setString(5, bookVO.getBook_stock());
+			pstmt.setInt(5, bookVO.getBook_stock());
 			
 			int result = pstmt.executeUpdate();
 			
@@ -110,10 +108,11 @@ public class BookDAOImpl extends DAO implements BookDAO {
 	public void update(BookVO bookVO) {
 		try {
 			connect();
-			String sql = "UPDATE BookList SET book_writer =? WHERE IBSN = ?";
+			String sql = "UPDATE BookList SET book_title = ?, book_writer =? WHERE book_ISBN = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, bookVO.getBook_writer());
-			pstmt.setInt(2, bookVO.getISBN());
+			pstmt.setString(1, bookVO.getBook_title());
+			pstmt.setString(2, bookVO.getBook_writer());
+			pstmt.setInt(3, bookVO.getISBN());
 			
 			int result = pstmt.executeUpdate();
 			
@@ -134,11 +133,11 @@ public class BookDAOImpl extends DAO implements BookDAO {
 	//======도서삭제========
 	/***빌려갔을때는 삭제하면 안되지 않나???***/
 	@Override
-	public void delete(BookVO bookVO) {
+	public void delete(int book_ISBN) {
 		try {
 			connect();
 			stmt = conn.createStatement();
-			String sql = "DELETE FROM BookList WHERE ISBN = " + bookVO;
+			String sql = "DELETE FROM BookList WHERE book_ISBN = " + book_ISBN;
 			int result = stmt.executeUpdate(sql);
 			
 			if(result>0) {

@@ -6,14 +6,13 @@ import java.util.Scanner;
 import com.yedam.app.booklist.BookDAO;
 import com.yedam.app.booklist.BookDAOImpl;
 import com.yedam.app.booklist.BookVO;
+import com.yedam.app.borrow.BookStockManagement;
 import com.yedam.app.borrow.BorrowBookDAO;
-import com.yedam.app.borrow.CheckoutBookDAO;
 
 public class Management {
-	Scanner sc = new Scanner(System.in);
-	BookDAO bkDAO = BookDAOImpl.getInstance();
-	BorrowBookDAO brDao = BorrowBookDAO.getInstance();
-	CheckoutBookDAO cDao = CheckoutBookDAO.getInstance();
+	protected Scanner sc = new Scanner(System.in);
+	protected BookDAO bkDAO = BookDAOImpl.getInstance();
+	protected BorrowBookDAO brDAO = BorrowBookDAO.getInstance();
 
 	public void run() {
 		while(true) {
@@ -41,16 +40,17 @@ public class Management {
 				deleteBook();
 			}else if(menuNo == 6) {
 				//도서대출
-				new
+				new BookStockManagement();
 			}else if(menuNo == 7) {
 				//도서반납
-				new
+				new BookStockManagement();
 			}else if(menuNo == 8) {
 				//미반납도서
-				/***????????***/
+				new BookStockManagement();
 			}else if(menuNo == 9) {
 				//종료
 				end();
+				break;
 			}else {
 				//기타사항
 				printErrorMessage();
@@ -65,9 +65,9 @@ public class Management {
 	}
 
 	private void end() {
-		System.out.println("----------------");
-		System.out.println("프로그램을 종료합니다");
-		System.out.println("----------------");
+		System.out.println("------------------------------------");
+		System.out.println("프로그램을 종료하고 로그인 화면으로 돌아갑니다");
+		System.out.println("------------------------------------");
 	}
 
 	private void menuPrint() {
@@ -96,19 +96,17 @@ public class Management {
 			return;
 		}
 		for (BookVO bookVO : list) {
-			System.out.printf("%d \t %s \t %s \t %s\n", bookVO.getISBN(), bookVO.getBook_title(),
-					bookVO.getBook_writer(), bookVO.getBook_content());
+			System.out.printf("%d \t %s \t %s \t %s \t 재고:%s \n", bookVO.getISBN(), bookVO.getBook_title(),
+					bookVO.getBook_writer(), bookVO.getBook_content(), bookVO.getBook_stock());
 		}
 	}
 
 	// 2. 개별조회
 	private void selectOne() {
-		BookVO findBook = inputBookInfo();
+		BookVO findBook = findBookInfo();
 		BookVO bookVO = bkDAO.selectOne(findBook);
 		if (bookVO == null) {
 			System.out.printf("%d번의 도서는 존재하지 않습니다.\n", findBook.getISBN());
-			System.out.printf("'%s'단어를 포함하는 도서는 존재하지 않습니다.\n", findBook.getBook_title());
-			System.out.printf("'%s'단어를 포함하는 저자는 존재하지 않습니다.\n", findBook.getBook_writer());
 		} else {
 			System.out.println("검색결과 > ");
 			System.out.println(bookVO);
@@ -123,8 +121,9 @@ public class Management {
 
 	// 4. 도서수정
 	private void updateBook() {
-		BookVO bookVO = inputBookInfo();
-		bkDAO.update(bookVO);
+		
+		BookVO bookVO2 = inputBookInfo();
+		bkDAO.update(bookVO2);
 	}
 
 	// 5. 도서삭제
@@ -135,6 +134,16 @@ public class Management {
 		bkDAO.delete(book_ISBN);
 
 	}
+	
+	//2-1. 도서 개별조회 항목
+	protected BookVO findBookInfo() {
+		BookVO bookVO = new BookVO();
+		System.out.println("도서번호(ISBN) 입력 > ");
+		bookVO.setISBN(Integer.parseInt(sc.nextLine()));
+		
+		return bookVO;
+	}
+	
 	//3-1. 도서등록 항목
 	private BookVO inputBookAll() {
 		BookVO bookVO = new BookVO();
@@ -147,7 +156,7 @@ public class Management {
 		System.out.println("도서내용 > ");
 		bookVO.setBook_content(sc.nextLine());
 		System.out.println("수량(재고) > ");
-		bookVO.setBook_stock(sc.nextLine());
+		bookVO.setBook_stock(Integer.parseInt(sc.nextLine()));
 		
 		return bookVO;
 	}
@@ -158,14 +167,14 @@ public class Management {
 		System.out.println("도서번호(ISBN) > ");
 		bookVO.setISBN(Integer.parseInt(sc.nextLine()));
 		System.out.println("도서명 수정 > ");
-		bookVO.setBook_title(sc.nextLine());
+		bookVO.setBook_title(sc.nextLine());			
 		System.out.println("저자 수정 > ");
-		bookVO.setBook_writer(sc.nextLine()));
+		bookVO.setBook_writer(sc.nextLine());
 		
 		return bookVO;
 	}
 	
-	//5-1. 도서삭제 내용
+	//5-1. 도서삭제 항목
 	/*** 대출중인거 삭제안되게 하기 ***/
 	private int inputBookISBN() {
 		int book_ISBN = 0;
