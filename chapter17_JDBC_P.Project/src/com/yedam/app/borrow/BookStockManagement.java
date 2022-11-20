@@ -1,11 +1,12 @@
 package com.yedam.app.borrow;
 
-import java.time.LocalDate;
+import java.util.List;
 
 import com.yedam.ap.Management;
 import com.yedam.app.booklist.BookVO;
 
 public class BookStockManagement extends Management{
+	
 	//하위 대출 반납 프로그램
 	public BookStockManagement() {
 		while(true) {
@@ -20,9 +21,12 @@ public class BookStockManagement extends Management{
 				//반납
 				bookCk();
 			}else if(menuNo == 3) {
-				//미반납도서
-				notCkout();
+				//대출목록조회
+				selectAll();
 			}else if(menuNo == 4) {
+				//미반납도서조회
+				notCkout();
+			}else if(menuNo == 5) {
 				//뒤로가기
 				back();
 				break;
@@ -33,9 +37,9 @@ public class BookStockManagement extends Management{
 	}
 	
 	protected void menuPrint() {
-		System.out.println("============================================");
-		System.out.println("1. 대출 | 2. 반납 | 3. 미반납도서조회 | 4. 뒤로가기");
-		System.out.println("============================================");
+		System.out.println("===========================================================");
+		System.out.println("1. 대출 | 2. 반납 | 3. 대출목록조회 | 4. 미반납도서조회 | 5. 뒤로가기");
+		System.out.println("===========================================================");
 	}
 	
 	private void back() {
@@ -72,24 +76,19 @@ public class BookStockManagement extends Management{
 			System.out.println("검색결과 > ");
 			System.out.println(bookVO);
 			
-			//재고1 이상이면 대출 가능
-			if(bookVO.getBook_stock() > 0) {
+			//보유 1 이상이면 대출 가능
+			if((bookVO.getBook_now_stock()) > 0) {
 				System.out.println("대출가능");
 				BorrowVO brVO = borInfo();
 				brDAO.insert(brVO);
-			} else {
+				brDAO.update(bookVO);
+			} else if(bookVO.getBook_now_stock() == 0) {
 				System.out.println("대출불가");
 				return;
 			}
 		}
 		
 	}
-	/***
-	//현재날짜
-	LocalDate now = LocalDate.now();
-	//일
-	int date = now.getDayOfMonth();
-	***/
 	
 	//1-1. 대출
 	protected BookVO findBookInfo() {
@@ -103,7 +102,7 @@ public class BookStockManagement extends Management{
 	//1-2. 대출
 	protected BorrowVO borInfo() {
 		BorrowVO brVO = new BorrowVO();
-		System.out.println("대출날짜(yyyy-MM-dd) > ");
+		System.out.println("대출날짜(yyyy/MM/dd) > ");
 		brVO.setBorrowDate(sc.nextLine());
 		System.out.println("대출인 > ");
 		brVO.setBorName(sc.nextLine());
@@ -111,32 +110,81 @@ public class BookStockManagement extends Management{
 		brVO.setBorTel(sc.nextLine());
 		System.out.println("도서번호(ISBN) > ");
 		brVO.setBookInfo(sc.nextLine());
-		System.out.println("대출만료일 > ");
+		System.out.println("대출만료일(yyyy/MM/dd) > ");
 		brVO.setBorrowEndDate(sc.nextLine());
+		
+		return brVO;
+	}
+	
+	//3.대출목록조회
+	private void selectAll() {
+		List<BorrowVO> list = brDAO.selectAll();
+		if(list.isEmpty()) {
+			System.out.println("대출목록이 비었습니다");
+			return;
+		}
+		for(BorrowVO brVO : list) {
+			System.out.printf("대출일:%s\t 대출인:%s\t 연락처:%s\t 책번호:%s\t 반납예정일:%s\t 반납일:%s\t 반납여부:%s\n"
+					, brVO.getBorrowDate(), brVO.getBorName(), brVO.getBorTel(), brVO.getBookInfo()
+					, brVO.getBorrowEndDate(), brVO.getCheckoutDate(), brVO.getBorrowCheckout());
+		}
+	}
+	
+	//
+	
+	//2. 반납
+	/***
+	 * 대출인 이름 입력받기 -> 대출 도서정보 확인
+	 * -> 반납일 이내이면 정상반납 알려주기, 반납일 이후이면 밀린 날만큼 대출불가 메시지 
+	 * -> 도서대출DB에 반납일자 추가되게하기 
+	 * -> 도서목록테이블에 재고 다시 추가하기
+	 * ***/
+	private void bookCk() {
+		//대출한 도서번호 입력받기
+		BookVO brBook = findBookInfo();
+		BookVO bookVO = bkDAO.selectOne(brBook);
+		if(bookVO == null) {
+			System.out.printf("%d번의 도서는 존재하지 않습니다.\n", brBook.getISBN());
+		}else {
+			System.out.println("검색결과 > ");
+			System.out.println(bookVO);
+			
+			BorrowVO brVO = ckInfo();
+			brDAO.ckoutUpdate(brVO);
+			brDAO.stockUpdate(bookVO);
+		}
+		
+	}
+	
+	//2-1. 반납
+	protected BorrowVO ckInfo() {
+		BorrowVO brVO = new BorrowVO();
+		System.out.println("반납날짜(yyyy/MM/dd) > ");
+		brVO.setCheckoutDate(sc.nextLine());
+		System.out.println("반납여부(반납완료) > ");
+		brVO.setBorrowCheckout(sc.nextLine());
 		
 		return brVO;
 	}
 	
 	
 	
-	//2. 반납
+	
+	//4. 미반납목록조회
 	/***
-	 * 대출인 이름 입력받기 -> 대출 도서정보 확인
-	 * -> 반납일 이내이면 정상반납 알려주기, 반납일 이후이면 밀린 날만큼 대출불가 메시지 
-	 * -> 도서대출DB에 반납일자 반납여부 추가되게하기 
-	 * -> 도서목록테이블에 재고 다시 추가하기
-	 * ***/
-	private void bookCk() {
-		
-		
-	}
-	
-	
-	
-	//미반납도서목록
-	/*** [반납되지 않은 도서명  대출한사람  연락처  반납일  연체일] ***/
+	 * 반납날짜 지난사람의 반납여부를 확인하여 해당도서번호 출력(?) 
+	 * [반납되지 않은 도서번호  도서명  대출한사람  연락처  연체일] ***/
 	private void notCkout() {
-		
+		List<BorrowVO> list = brDAO.notCkoutInfo();
+		if(list.isEmpty()) {
+			System.out.println("미반납도서가 없습니다");
+			return;
+		}
+		for(BorrowVO brVO : list) {
+			System.out.printf("대출일:%s\t 대출인:%s\t 연락처:%s\t 책번호:%s\t 반납예정일:%s\n"
+					, brVO.getBorrowDate(), brVO.getBorName(), brVO.getBorTel()
+					, brVO.getBookInfo() ,brVO.getBorrowEndDate());
+		}
 	}
 	
 	

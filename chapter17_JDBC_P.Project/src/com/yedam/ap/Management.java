@@ -96,8 +96,8 @@ public class Management {
 			return;
 		}
 		for (BookVO bookVO : list) {
-			System.out.printf("%d \t %s \t %s \t %s \t 재고:%s \n", bookVO.getISBN(), bookVO.getBook_title(),
-					bookVO.getBook_writer(), bookVO.getBook_content(), bookVO.getBook_stock());
+			System.out.printf("%d \t %s \t %s \t %s \t 보유:%s \t 재고:%s \n", bookVO.getISBN(), bookVO.getBook_title(),
+					bookVO.getBook_writer(), bookVO.getBook_content(), bookVO.getBook_now_stock(), bookVO.getBook_total_stock());
 		}
 	}
 
@@ -155,8 +155,10 @@ public class Management {
 		bookVO.setBook_writer(sc.nextLine());
 		System.out.println("도서내용 > ");
 		bookVO.setBook_content(sc.nextLine());
-		System.out.println("수량(재고) > ");
-		bookVO.setBook_stock(Integer.parseInt(sc.nextLine()));
+		System.out.println("보유 > ");
+		bookVO.setBook_now_stock(Integer.parseInt(sc.nextLine()));
+		System.out.println("재고 > ");
+		bookVO.setBook_total_stock(Integer.parseInt(sc.nextLine()));
 		
 		return bookVO;
 	}
