@@ -57,7 +57,4 @@ public class BookVO {
 				+ "\t 대출 가능 권수 : " + book_now_stock
 				+ "\t 총 보유 권수 : " + book_total_stock;
 	}
-	
-	
-	
 }

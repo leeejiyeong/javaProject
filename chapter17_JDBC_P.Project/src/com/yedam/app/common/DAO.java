@@ -12,7 +12,6 @@ public class DAO {
 	private String jdbcDriver = "org.sqlite.JDBC";
 	private String jdbcUrl = "jdbc:sqlite:/D:/dev/Database/BookDateBase.db";
 	
-	
 	//각 메소드에서 공통적으로 사용하는 변수- 필드
 	protected Connection conn;
 	protected Statement stmt;
@@ -26,7 +25,6 @@ public class DAO {
 		try {
 			Class.forName(jdbcDriver);
 			conn = DriverManager.getConnection(jdbcUrl);
-
 		} catch (ClassNotFoundException e) {
 			System.out.println("JDBC DRIVER LOADING FAIL");
 		} catch (SQLException e) {
@@ -50,6 +48,4 @@ public class DAO {
 			System.out.println("정상적으로 자원이 해제되지 않았습니다.");
 		}
 	}
-
-
 }

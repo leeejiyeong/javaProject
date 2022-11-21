@@ -22,7 +22,6 @@ public class BookDAOImpl extends DAO implements BookDAO {
 		List<BookVO> list = new ArrayList<>();
 		try {
 			connect();
-
 			stmt = conn.createStatement();
 			String sql = "SELECT * FROM BookList";
 			rs = stmt.executeQuery(sql);
@@ -37,7 +36,6 @@ public class BookDAOImpl extends DAO implements BookDAO {
 				bookVO.setBook_total_stock(rs.getInt("book_total_stock"));
 				list.add(bookVO);
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -55,7 +53,6 @@ public class BookDAOImpl extends DAO implements BookDAO {
 			String sql = "SELECT * FROM BookList WHERE book_ISBN = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, bookVO.getISBN());
-
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
@@ -67,7 +64,6 @@ public class BookDAOImpl extends DAO implements BookDAO {
 				findVO.setBook_now_stock(rs.getInt("book_now_stock"));
 				findVO.setBook_total_stock(rs.getInt("book_total_stock"));
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -89,7 +85,6 @@ public class BookDAOImpl extends DAO implements BookDAO {
 			pstmt.setString(4, bookVO.getBook_content());
 			pstmt.setInt(5, bookVO.getBook_now_stock());
 			pstmt.setInt(6, bookVO.getBook_total_stock());
-
 			int result = pstmt.executeUpdate();
 
 			if (result > 0) {
@@ -97,7 +92,6 @@ public class BookDAOImpl extends DAO implements BookDAO {
 			} else {
 				System.out.println("도서등록이 정상적으로 완료되지 않았습니다.");
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -106,17 +100,16 @@ public class BookDAOImpl extends DAO implements BookDAO {
 	}
 
 	// ======도서수정========
-	/*** 빌려갔을때는 수정하면 안되지 않나??? ***/
 	@Override
 	public void update(BookVO bookVO) {
 		try {
 			connect();
-			String sql = "UPDATE BookList SET book_title = ?, book_writer =? WHERE book_ISBN = ?";
+			String sql = "UPDATE BookList SET book_title = ?, book_writer =? "
+					+ "WHERE book_ISBN = ? AND book_now_stock = book_total_stock";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, bookVO.getBook_title());
 			pstmt.setString(2, bookVO.getBook_writer());
 			pstmt.setInt(3, bookVO.getISBN());
-
 			int result = pstmt.executeUpdate();
 
 			if (result > 0) {
@@ -124,24 +117,23 @@ public class BookDAOImpl extends DAO implements BookDAO {
 			} else {
 				System.out.println("정상적으로 수정되지 않았습니다.");
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			disconnect();
-
 		}
 	}
 
 	// ======도서삭제========
-	/*** 빌려갔을때는 삭제하면 안되지 않나??? ***/
 	@Override
 	public void delete(int book_ISBN) {
 		try {
 			connect();
-			stmt = conn.createStatement();
-			String sql = "DELETE FROM BookList WHERE book_ISBN = " + book_ISBN;
-			int result = stmt.executeUpdate(sql);
+			String sql = "DELETE FROM BookList "
+					+ "WHERE book_ISBN = ? AND book_now_stock = book_total_stock";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, book_ISBN);
+			int result = pstmt.executeUpdate();
 
 			if (result > 0) {
 				System.out.println("정상적으로 삭제되었습니다.");
@@ -149,9 +141,9 @@ public class BookDAOImpl extends DAO implements BookDAO {
 				System.out.println("정상적으로 삭제되지 않았습니다.");
 				return;
 			}
-		} catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
-		} finally {
+		}finally {
 			disconnect();
 		}
 	}

@@ -6,10 +6,8 @@ public class LoginDAO extends DAO {
 
 	// 싱글톤
 	private static LoginDAO dao = null;
-
 	private LoginDAO() {
 	}
-
 	public static LoginDAO getInstance() {
 		if (dao == null) {
 			dao = new LoginDAO();
@@ -43,14 +41,11 @@ public class LoginDAO extends DAO {
 				// 아이디 존재x
 				System.out.println("아이디가 존재하지 않습니다.");
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			disconnect();
 		}
 		return loginInfo;
-
 	}
-
 }

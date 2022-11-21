@@ -1,15 +1,16 @@
 package com.yedam.app.borrow;
 
 public class BorrowVO {
-	
+	//자바에서 사용할 필드 만들어 주기 
 	private String borrowDate;
 	private String borName;
 	private String borTel;
-	private String bookInfo;
+	private int bookInfo;
 	private String borrowEndDate;
 	private String checkoutDate;
 	private String borrowCheckout;
 	
+	//Getter Setter 메소드 추가해주기
 	public String getBorrowDate() {
 		return borrowDate;
 	}
@@ -28,10 +29,10 @@ public class BorrowVO {
 	public void setBorTel(String borTel) {
 		this.borTel = borTel;
 	}
-	public String getBookInfo() {
+	public int getBookInfo() {
 		return bookInfo;
 	}
-	public void setBookInfo(String bookInfo) {
+	public void setBookInfo(int bookInfo) {
 		this.bookInfo = bookInfo;
 	}
 	public String getBorrowEndDate() {
@@ -59,8 +60,7 @@ public class BorrowVO {
 				+ ", 연락처 : " + borTel 
 				+ ", 도서정보 : " + bookInfo 
 				+ ", 반납예정일 : " + borrowEndDate 
-				+ ", 반납일 : " + checkoutDate 
-				+ ", 반납여부 : "+ borrowCheckout;
+				+ ", 반납일 : " + checkoutDate;
 	}
 	
 	

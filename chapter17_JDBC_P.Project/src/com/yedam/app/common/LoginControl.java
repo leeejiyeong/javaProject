@@ -8,11 +8,14 @@ import com.yedam.app.login.LoginDAO;
 
 public class LoginControl {
 	private Scanner sc = new Scanner(System.in);
+	
+	//싱글톤
 	private static Login LoginInfo = null;
 	public static Login getLoginInfo() {
 		return LoginInfo;
 	}
 	
+	//로그인 메뉴
 	public LoginControl() {
 		while(true) {
 			menuPrint();
@@ -38,6 +41,7 @@ public class LoginControl {
 		System.out.println("=================");
 	}
 	
+	//메뉴번호 입력
 	private int menuSelect() {
 		int menuNo = 0;
 		try {
@@ -81,13 +85,4 @@ public class LoginControl {
 		
 		return info;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
