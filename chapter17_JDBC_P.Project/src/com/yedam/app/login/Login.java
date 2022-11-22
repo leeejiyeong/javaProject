@@ -1,9 +1,11 @@
 package com.yedam.app.login;
 
 public class Login {
+	//사용할 필드 만들어주기
 	private String loginId;
 	private String loginPw;
 	
+	//Getter setter 메소드 만들기
 	public String getLoginId() {
 		return loginId;
 	}
@@ -16,12 +18,6 @@ public class Login {
 	public void setLoginPw(String loginPw) {
 		this.loginPw = loginPw;
 	}
-	
-	@Override
-	public String toString() {
-		return "login [loginId=" + loginId + ", loginPw=" + loginPw + "]";
-	}
-	
 	
 	
 }

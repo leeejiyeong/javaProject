@@ -23,6 +23,7 @@ public class BorrowBookDAO extends DAO {
 	// 대출테이블에 등록
 	public void insert(BorrowVO bv) {
 		try {
+			//대출테이블에 정보 입력받아 등록
 			connect();
 			String sql = "INSERT INTO bookBorrowCheckout (borrow_date, bor_name, bor_tel, "
 					+ "book_info, borrow_end_date)" + "VALUES (?, ?, ?, ?, ?)";
@@ -36,9 +37,9 @@ public class BorrowBookDAO extends DAO {
 			int result = pstmt.executeUpdate();
 
 			if (result > 0) {
-				System.out.println("대출등록이 정상적으로 완료되었습니다.");
+				System.out.println("대출이 정상적으로 완료되었습니다.");
 			} else {
-				System.out.println("대출등록이 정상적으로 완료되지 않았습니다.");
+				System.out.println("대출이 정상적으로 완료되지 않았습니다.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -47,13 +48,15 @@ public class BorrowBookDAO extends DAO {
 		}
 	}
 
-	// 대출하면 보유량 -1되게 수정하기
+	// 대출시 보유량 -1
 	public void update(BookVO bookVO) {
 		try {
 			connect();
+			//책번호를 조건으로 보유량 수정
 			String sql = "UPDATE BookList SET book_now_stock = ? WHERE book_ISBN  = ? ";
 			pstmt = conn.prepareStatement(sql);
-
+			
+			//보유량에서 -1
 			pstmt.setInt(1, bookVO.getBook_now_stock() - 1);
 			pstmt.setInt(2, bookVO.getISBN());
 
@@ -68,6 +71,7 @@ public class BorrowBookDAO extends DAO {
 
 	// 대출목록 전체조회
 	public List<BorrowVO> selectAll() {
+		//대출테이블 리스트로 불러옴
 		List<BorrowVO> list = new ArrayList<>();
 		try {
 			connect();
@@ -93,9 +97,10 @@ public class BorrowBookDAO extends DAO {
 		return list;
 	}
 
-	// 반납(대출목록에 반납날짜 추가)
+	// 반납
 	public void ckoutUpdate(BorrowVO brVO) {
 		try {
+			//대출목록에 책번호를 조건으로 반납날짜 추가(수정)
 			connect();
 			String sql = "UPDATE BookBorrowCheckout SET checkout_date =? "
 					+ "WHERE book_info =?";
@@ -116,13 +121,15 @@ public class BorrowBookDAO extends DAO {
 		}
 	}
 
-	// 반납하면 보유량 +1하게 수정하기
+	// 반납하면 보유량 +1
 	public void stockUpdate(BookVO bookVO) {
 		try {
 			connect();
+			//책번호를 조건으로 보유량 수정
 			String sql = "UPDATE BookList SET book_now_stock =? "
 					+ "WHERE book_ISBN = ?";
 			pstmt = conn.prepareStatement(sql);
+			//보유량 +1
 			pstmt.setInt(1, bookVO.getBook_now_stock() + 1);
 			pstmt.setInt(2, bookVO.getISBN());
 			pstmt.executeUpdate();
@@ -133,11 +140,13 @@ public class BorrowBookDAO extends DAO {
 		}
 	}
 
-	// 미반납도서조회(반납날짜가 null인 행만 select로 가져와서 리스트로 출력)
+	// 미반납도서조회
 	public List<BorrowVO> notCkoutInfo() {
+		//리스트 생성
 		List<BorrowVO> list = new ArrayList<>();
 		try {
 			connect();
+			//반납날짜가 null인 행만 가져와서 리스트로 출력
 			String sql = "SELECT * FROM BookBorrowCheckout "
 					+ "WHERE checkout_date IS NULL";
 			pstmt = conn.prepareStatement(sql);

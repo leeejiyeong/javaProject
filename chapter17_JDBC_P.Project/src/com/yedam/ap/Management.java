@@ -11,7 +11,7 @@ import com.yedam.app.borrow.BorrowBookDAO;
 
 public class Management {
 	protected Scanner sc = new Scanner(System.in);
-	//DAO클래스에서 만든 싱글톤 불러오기
+	// DAO클래스에서 만든 싱글톤 불러오기
 	protected BookDAO bkDAO = BookDAOImpl.getInstance();
 	protected BorrowBookDAO brDAO = BorrowBookDAO.getInstance();
 
@@ -54,13 +54,11 @@ public class Management {
 	}
 
 	private void printErrorMessage() {
-		System.out.println("번호를 확인하고 다시 입력하세요");
+		System.out.println("번호를 확인하고 다시 입력하세요.");
 	}
 
 	private void end() {
-		System.out.println("------------------------------------");
 		System.out.println("프로그램을 종료하고 로그인 화면으로 돌아갑니다");
-		System.out.println("------------------------------------");
 	}
 
 	private void menuPrint() {
@@ -74,23 +72,24 @@ public class Management {
 	private int menuSelect() {
 		int menuNo = 0;
 		try {
-			//메뉴 숫자 입력
+			// 메뉴 숫자 입력
 			menuNo = Integer.parseInt(sc.nextLine());
-		//숫자말고 다른거 넣을때 오류발생시 메시지 출력
 		} catch (NumberFormatException e) {
-			System.out.println("메뉴는 숫자입니다");
+			System.out.println("메뉴는 숫자입니다.");
 		}
 		return menuNo;
 	}
 
 	// 1. 전체조회
 	private void selectAll() {
-		//sql이 저장된 메소드를 불러와서 리스트 만들기
+		// sql이 저장된 메소드를 불러와서 리스트 만들기
 		List<BookVO> list = bkDAO.selectAll();
+		//리스트가 비었을경우
 		if (list.isEmpty()) {
-			System.out.println("정보가 존재하지 않습니다");
+			System.out.println("정보가 존재하지 않습니다.");
 			return;
 		}
+		//리스트 있을경우 순서대로 출력
 		for (BookVO bookVO : list) {
 			System.out.printf("%d \t %s \t %s \t %s \t 보유:%s \t 재고:%s \n", bookVO.getISBN(), bookVO.getBook_title(),
 					bookVO.getBook_writer(), bookVO.getBook_content(), bookVO.getBook_now_stock(),
@@ -100,12 +99,14 @@ public class Management {
 
 	// 2. 개별조회
 	private void selectOne() {
-		//도서번호 입력받기
+		// 2-1.의 도서번호 입력받기
 		BookVO findBook = findBookInfo();
-		//해당번호의 도서정보 출력
+		// 해당번호의 도서정보 출력
 		BookVO bookVO = bkDAO.selectOne(findBook);
+		//번호가 없거나 잘못입력시
 		if (bookVO == null) {
 			System.out.println("도서가 존재하지 않습니다.");
+		//제대로 입력시
 		} else {
 			System.out.println("검색결과 > ");
 			System.out.println(bookVO);
@@ -114,27 +115,64 @@ public class Management {
 
 	// 3. 도서등록
 	private void insertBook() {
-		BookVO bookVO = inputBookAll();
-		bkDAO.insert(bookVO);
+		try {
+			//3-1.의 등록정보 입력받기
+			BookVO bookVO = inputBookAll();
+			//등록전에 등록여부 물어봄
+			System.out.println("등록하시겠습니까?(Y/N)");
+			String answer = sc.nextLine();
+			//y면 등록o
+			if(answer.equals("y") || answer.equals("Y")) {
+				bkDAO.insert(bookVO);
+			//n이면 등록x	
+			}else if(answer.equals("n") || answer.equals("N")) {
+				System.out.println("등록이 취소되었습니다.");
+				return;
+			//그외의 문자 등록x
+			}else {
+				System.out.println("(Y/N)중에 입력하세요");
+				System.out.println("등록이 취소되었습니다.");
+			}
+		} catch (NumberFormatException e) {
+			System.out.println("도서번호, 보유량, 재고량은 숫자입니다.");
+		}
 	}
 
 	// 4. 도서수정
 	private void updateBook() {
-		// 수정할 도서번호 입력받기
+		// 2-1의 개별정보 이용하여 수정할 도서번호 확인
 		BookVO findBook = findBookInfo();
 		// 해당 번호의 도서정보 출력
 		BookVO bookVO = bkDAO.selectOne(findBook);
+		//번호없거나 잘못입력시
 		if (bookVO == null) {
 			System.out.println("도서가 존재하지 않습니다.");
+		//제대로 입력시
 		} else {
 			System.out.println("검색결과 > ");
 			System.out.println(bookVO);
 
-			// 보유량과 재고량이 같을때만 수정가능
+			// 보유량과 재고량이 같을때만 수정o
 			if (bookVO.getBook_now_stock() == bookVO.getBook_total_stock()) {
 				System.out.println("수정가능");
-				BookVO bookVO2 = inputBookInfo();
-				bkDAO.update(bookVO2);
+				//수정할 내용 입력
+				//수정전에 수정여부 물어봄
+				System.out.println("수정하시겠습니까?(Y/N)");
+				String answer = sc.nextLine();
+				//y면 수정o
+				if(answer.equals("y") || answer.equals("Y")) {
+					BookVO bookVO2 = inputBookInfo();
+					bkDAO.update(bookVO2);
+				//n이면 수정x	
+				}else if(answer.equals("n") || answer.equals("N")) {
+					System.out.println("메뉴로 돌아갑니다.");
+					return;
+				//기타문자 수정x
+				}else {
+					System.out.println("(Y/N)중에 입력하세요");
+					System.out.println("메뉴로 돌아갑니다.");
+				}
+			//보유량 재고량 같지않을때(대출중일때) 수정x
 			} else {
 				System.out.println("수정불가");
 			}
@@ -143,22 +181,41 @@ public class Management {
 
 	// 5. 도서삭제
 	private void deleteBook() {
-		//삭제할 도서번호 입력받기
+		// 2-1.개별정보 이용하여 삭제할 도서번호 확인
 		BookVO findBook = findBookInfo();
-		//해당번호 도서정보 출력
+		// 해당번호 도서정보 출력
 		BookVO bookVO = bkDAO.selectOne(findBook);
+		// 없는번호거나 잘못입력시
 		if (bookVO == null) {
 			System.out.println("도서가 존재하지 않습니다.");
+		//제대로 입력시
 		} else {
 			System.out.println("검색결과 > ");
 			System.out.println(bookVO);
 
-			// 보유량과 재고량이 같을때만 수정가능
+			// 보유량과 재고량이 같을때만 삭제o
 			if (bookVO.getBook_now_stock() == bookVO.getBook_total_stock()) {
 				System.out.println("삭제가능");
+				//삭제할 도서번호 입력받기
 				System.out.println("삭제할 도서번호 입력 > ");
 				int book_ISBN = inputBookISBN();
-				bkDAO.delete(book_ISBN);
+				//삭제전에 삭제여부 물어봄
+				System.out.println("삭제하시겠습니까?(Y/N)");
+				String answer = sc.nextLine();
+				
+				//y입력하면 삭제o
+				if (answer.equals("y") || answer.equals("Y")) {
+					bkDAO.delete(book_ISBN);
+				//n이면 삭제x
+				} else if (answer.equals("n") || answer.equals("N")) {
+					System.out.println("삭제가 취소되었습니다.");
+					return;
+				//기타문자 삭제x
+				} else {
+					System.out.println("(Y/N)중에 입력하세요");
+					System.out.println("삭제가 취소되었습니다.");
+				}
+			//보유량 재고량 다르면(대출중이면) 삭제x	
 			} else {
 				System.out.println("삭제불가");
 			}
@@ -173,7 +230,7 @@ public class Management {
 		try {
 			bookVO.setISBN(Integer.parseInt(sc.nextLine()));
 		} catch (NumberFormatException e) {
-			System.out.println("도서번호를 숫자로 입력하세요");
+			System.out.println("도서번호를 숫자로 입력하세요.");
 		}
 		return bookVO;
 	}
@@ -181,7 +238,7 @@ public class Management {
 	// 3-1. 도서등록 출력
 	private BookVO inputBookAll() {
 		BookVO bookVO = new BookVO();
-		System.out.println("도서번호(ISBN) > ");
+		System.out.println("등록할 도서번호 입력 > ");
 		bookVO.setISBN(Integer.parseInt(sc.nextLine()));
 		System.out.println("도서명 > ");
 		bookVO.setBook_title(sc.nextLine());
@@ -193,7 +250,6 @@ public class Management {
 		bookVO.setBook_now_stock(Integer.parseInt(sc.nextLine()));
 		System.out.println("재고 > ");
 		bookVO.setBook_total_stock(Integer.parseInt(sc.nextLine()));
-
 		return bookVO;
 	}
 
@@ -209,7 +265,7 @@ public class Management {
 			bookVO.setBook_writer(sc.nextLine());
 
 		} catch (NumberFormatException e) {
-			System.out.println("숫자로 입력하세요");
+			System.out.println("숫자로 입력하세요.");
 		}
 		return bookVO;
 	}
@@ -220,7 +276,7 @@ public class Management {
 		try {
 			book_ISBN = Integer.parseInt(sc.nextLine());
 		} catch (NumberFormatException e) {
-			System.out.println("숫자로 입력해주세요");
+			System.out.println("숫자로 입력하세요.");
 		}
 		return book_ISBN;
 	}

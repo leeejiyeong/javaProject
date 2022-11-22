@@ -1,7 +1,7 @@
 package com.yedam.app.borrow;
 
 public class BorrowVO {
-	//자바에서 사용할 필드 만들어 주기 
+	//사용할 필드 만들어 주기 
 	private String borrowDate;
 	private String borName;
 	private String borTel;

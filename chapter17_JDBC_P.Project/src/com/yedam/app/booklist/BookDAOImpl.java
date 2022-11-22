@@ -19,9 +19,11 @@ public class BookDAOImpl extends DAO implements BookDAO {
 	// ======전체조회========
 	@Override
 	public List<BookVO> selectAll() {
+		//리스트 생성
 		List<BookVO> list = new ArrayList<>();
 		try {
 			connect();
+			//DB에서 목록가져옴
 			stmt = conn.createStatement();
 			String sql = "SELECT * FROM BookList";
 			rs = stmt.executeQuery(sql);
@@ -49,6 +51,7 @@ public class BookDAOImpl extends DAO implements BookDAO {
 	public BookVO selectOne(BookVO bookVO) {
 		BookVO findVO = null;
 		try {
+			//DB에서 조건에 맞는 목록만 가져옴
 			connect();
 			String sql = "SELECT * FROM BookList WHERE book_ISBN = ?";
 			pstmt = conn.prepareStatement(sql);
@@ -76,6 +79,7 @@ public class BookDAOImpl extends DAO implements BookDAO {
 	@Override
 	public void insert(BookVO bookVO) {
 		try {
+			//DB에 목록 추가
 			connect();
 			String sql = "INSERT INTO bookList VALUES (?, ?, ?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
@@ -88,12 +92,13 @@ public class BookDAOImpl extends DAO implements BookDAO {
 			int result = pstmt.executeUpdate();
 
 			if (result > 0) {
-				System.out.println("도서등록이 정상적으로 완료되었습니다.");
+				System.out.println("정상적으로 등록되었습니다.");
 			} else {
-				System.out.println("도서등록이 정상적으로 완료되지 않았습니다.");
+				System.out.println("정상적으로 등록되지 않았습니다.");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("정상적으로 등록되지 않았습니다");
+			System.out.println("내용을 다시 확인해주세요.");
 		} finally {
 			disconnect();
 		}
@@ -103,6 +108,7 @@ public class BookDAOImpl extends DAO implements BookDAO {
 	@Override
 	public void update(BookVO bookVO) {
 		try {
+			//조건이 맞는 경우에만 DB수정
 			connect();
 			String sql = "UPDATE BookList SET book_title = ?, book_writer =? "
 					+ "WHERE book_ISBN = ? AND book_now_stock = book_total_stock";
@@ -128,6 +134,7 @@ public class BookDAOImpl extends DAO implements BookDAO {
 	@Override
 	public void delete(int book_ISBN) {
 		try {
+			//조건이 맞는 경우에만 데이터삭제
 			connect();
 			String sql = "DELETE FROM BookList "
 					+ "WHERE book_ISBN = ? AND book_now_stock = book_total_stock";

@@ -47,17 +47,17 @@ public class LoginControl {
 		try {
 			menuNo = Integer.parseInt(sc.nextLine());
 		}catch(NumberFormatException e) {
-			System.out.println("숫자 형식으로 입력하세요");
+			System.out.println("숫자 형식으로 입력하세요.");
 		}
 		return menuNo;
 	}
 	
 	private void exit() {
-		System.out.println("프로그램을 종료합니다");
+		System.out.println("프로그램을 종료합니다.");
 	}
 	
 	private void printErrorMessage() {
-		System.out.println("메뉴를 다시 확인해주세요");
+		System.out.println("메뉴를 다시 확인해주세요.");
 	}
 	
 	//로그인하기

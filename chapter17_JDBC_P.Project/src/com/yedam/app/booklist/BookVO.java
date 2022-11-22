@@ -47,6 +47,7 @@ public class BookVO {
 	public void setBook_total_stock(int book_total_stock) {
 		this.book_total_stock = book_total_stock;
 	}
+	
 	//클래스 값이 제대로 담긴지 확인 -> toString 사용
 	@Override
 	public String toString() {

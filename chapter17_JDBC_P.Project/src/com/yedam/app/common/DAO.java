@@ -10,7 +10,7 @@ import java.sql.Statement;
 public class DAO {
 	//DB 연결정보가 있는곳
 	private String jdbcDriver = "org.sqlite.JDBC";
-	private String jdbcUrl = "jdbc:sqlite:/D:/dev/Database/BookDateBase.db";
+	private String jdbcUrl = "jdbc:sqlite:/C:/Users/admin/Desktop/book/Database/BookDateBase.db";
 	
 	//각 메소드에서 공통적으로 사용하는 변수- 필드
 	protected Connection conn;
